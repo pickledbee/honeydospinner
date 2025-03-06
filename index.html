@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honey Do List Spinner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <h1>Honey Do List Spinner</h1>
+        
+        <!-- Task editor section -->
+        <div class="task-editor">
+            <h2>Customize Your Wheel</h2>
+            
+            <div id="single-edit-view">
+                <div class="add-task-form">
+                    <input 
+                        type="text" 
+                        id="new-task-input" 
+                        placeholder="Add a new task" 
+                    >
+                    <button id="add-task-btn">Add</button>
+                </div>
+                
+                <div class="tasks-list" id="tasks-list">
+                    <!-- Tasks will be added here dynamically -->
+                </div>
+                
+                <button id="show-bulk-edit-btn">Bulk Edit</button>
+            </div>
+            
+            <div id="bulk-edit-view" style="display: none;">
+                <textarea 
+                    id="bulk-tasks-input" 
+                    placeholder="Enter tasks, one per line"
+                ></textarea>
+                <div class="button-group">
+                    <button id="update-bulk-btn">Update</button>
+                    <button id="cancel-bulk-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wheel container -->
+        <div class="wheel-container">
+            <!-- Outside label circle with emojis -->
+            <div class="outside-circle" id="outside-circle">
+                <!-- Bees, honey jars and tasks will be added dynamically -->
+            </div>
+            
+            <!-- Inner wheel -->
+            <div class="inner-wheel" id="inner-wheel">
+                <!-- Wheel segments will be added dynamically -->
+                <div class="center-button"></div>
+            </div>
+            
+            <!-- Pointer -->
+            <div class="pointer">
+                <div class="pointer-head"></div>
+            </div>
+        </div>
+        
+        <!-- Spin button -->
+        <button id="spin-btn" class="spin-button">SPIN!</button>
+        
+        <!-- Selected task display -->
+        <div id="selected-task-display" class="selected-task" style="display: none;">
+            <h2>Your Honey Do Task:</h2>
+            <p id="selected-task-text"></p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
