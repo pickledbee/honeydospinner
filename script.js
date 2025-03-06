@@ -160,6 +160,9 @@ document.addEventListener('DOMContentLoaded', function() {
             labelContent.className = 'task-label-content';
             labelContent.textContent = task;
             
+            // Add task index as data attribute for debugging
+            labelContent.dataset.taskIndex = index;
+            
             taskLabel.appendChild(labelContent);
             outsideCircle.appendChild(taskLabel);
             
@@ -168,6 +171,8 @@ document.addEventListener('DOMContentLoaded', function() {
             segment.className = 'wheel-segment';
             segment.style.backgroundColor = colors[index % colors.length];
             segment.style.transform = `rotate(${index * segmentAngle}deg)`;
+            // Add task index as data attribute for debugging
+            segment.dataset.taskIndex = index;
             innerWheel.appendChild(segment);
         });
     }
@@ -190,18 +195,48 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculate which task is selected after spinning
         setTimeout(() => {
             const normalizedRotation = rotation % 360;
-            const selectedIndex = Math.floor((360 - normalizedRotation) / segmentAngle) % tasks.length;
-            selectedTask = tasks[selectedIndex];
+            // Fix the calculation - use correct task index based on wheel position
+            // The wheel spins clockwise but we need the task in the pointer's position
+            const selectedIndex = Math.floor((360 - (normalizedRotation % 360)) / segmentAngle) % tasks.length;
+            
+            // Add debug log to help troubleshooting
+            console.log('Spin completed', {
+                rotation,
+                normalizedRotation,
+                segmentAngle,
+                selectedIndex,
+                tasksLength: tasks.length,
+                selectedTask: tasks[selectedIndex]
+            });
+            
+            // Ensure we have a valid index
+            if (selectedIndex >= 0 && selectedIndex < tasks.length) {
+                selectedTask = tasks[selectedIndex];
+                selectedTaskText.textContent = selectedTask;
+                selectedTaskDisplay.style.display = 'block';
+            } else {
+                // Fallback in case of calculation error
+                selectedTask = tasks[0];
+                selectedTaskText.textContent = selectedTask + ' (fallback)';
+                selectedTaskDisplay.style.display = 'block';
+            }
             
             spinning = false;
             spinBtn.disabled = false;
             spinBtn.textContent = 'SPIN!';
-            
-            selectedTaskText.textContent = selectedTask;
-            selectedTaskDisplay.style.display = 'block';
-        }, 3000); // Match this with the CSS transition duration
+        }, 3100); // Slightly longer than the CSS transition duration to ensure animation is complete
     }
 
     // Initial render
     renderTasksList();
+    
+    // Debug function to verify the wheel is working properly
+    window.debugWheel = function() {
+        console.log({
+            tasks,
+            segmentAngle: 360 / tasks.length,
+            rotation,
+            spinning
+        });
+    };
 });
